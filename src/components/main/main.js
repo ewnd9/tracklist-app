@@ -10,7 +10,7 @@ import { audioSearch } from './../../api';
 
 export default React.createClass({
   loadTracks(value) {
-    const tracks = splitTracklist(value).splice(0, 2);
+    const tracks = splitTracklist(value);//.splice(0, 2);
 
     if (tracks.length === 0) {
       return null;
@@ -47,23 +47,26 @@ export default React.createClass({
     return tracks;
   },
   getInitialState() {
-    if (process.env.NODE_ENV === 'development') {
-      return { tracks: this.loadTracks(require('raw!./test.txt')), songs: [] };
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   return { tracks: this.loadTracks(require('raw!./test.txt')), songs: [] };
+    // }
 
     return { tracks: null, songs: [] };
   },
-  playSwitch(event, audio) {
-    if (audio.url !== this.state.songs[0]) {
-      const song = {
+  setSongs(audios) {
+    this.setState({
+      songs: audios.map(audio => ({
         url: audio.url,
         artist: {
           name: audio.artist,
           song: audio.title
         }
-      };
-
-      this.setState({ songs: [song] });
+      }))
+    });
+  },
+  playSwitch(event, audio) {
+    if (audio.url !== this.state.songs[0]) {
+      this.setSongs([audio]);
     }
   },
   onPaste(event, id, data) {
@@ -72,12 +75,24 @@ export default React.createClass({
       this.setState({ tracks: this.loadTracks(value) });
     }, 100);
   },
+  playAll() {
+    const audios = this.state.tracks.reduce((total, track) => {
+      if (track.audios.length > 0) {
+        total.push(track.audios[0]);
+      }
+
+      return total;
+    }, []);
+
+    this.setSongs(audios);
+  },
   render() {
     if (this.state.tracks) {
       return <div>
         { this.state.songs.length > 0 && (
           <CLAudioPlayer songs={this.state.songs} autoplay />
         ) || ''}
+        <button onClick={this.playAll}>Play all</button>
         {
           this.state.tracks.map((track, index) => {
             return <Track key={index}
