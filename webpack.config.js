@@ -33,9 +33,23 @@ module.exports = {
         test: /\.html$/,
         loader: "file?name=[name].[ext]",
       },
-      { test: /\.css$/, loader: "style-loader!css-loader" },
+      {
+        test: /\/src\/[\w]+\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\/components\/.+\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+        ]
+      },
       { test: /\.png$/, loader: "url-loader?limit=100000" },
       { test: /\.jpg$/, loader: "file-loader" },
+      { test: /\.gif$/, loader: "file-loader" },
       { test: /\.json$/, loader: "file-loader" },
       { test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },

@@ -29,6 +29,9 @@ export function audioSearch(track) {
         if (data.response) {
           resolve(data.response);
         } else {
+          if (data.error) {
+            console.log(data.error);
+          }
           reject(data);
         }
       });

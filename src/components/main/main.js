@@ -4,7 +4,12 @@ import splitTracklist from 'split-tracklist';
 import Track from './../track/track';
 
 export default React.createClass({
-  getInitialState: () => ({ tracks: null }),
+  getInitialState: () => {
+    if (process.env.NODE_ENV === 'development') {
+      return { tracks: splitTracklist(require('raw!./test.txt')).slice(0, 1) };
+    }
+    return { tracks: null };
+  },
   onPaste(event, id, data) {
     setTimeout(() => {
       const value = this.refs.myTextarea.value;
@@ -18,12 +23,12 @@ export default React.createClass({
       return <div>
         {
           this.state.tracks.map((track, index) => {
-            return <Track key={index} track={track} />;
+            return <Track key={index} track={track} index={index} />;
           })
         }
       </div>;
     } else {
-      return <textarea onPaste={this.onPaste} ref="myTextarea" rows="50" />;
+      return <textarea onPaste={this.onPaste} ref="myTextarea" />;
     }
   }
 });
