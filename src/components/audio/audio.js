@@ -4,8 +4,12 @@ import styles from './style.css';
 import { playSwitch, add, isAdded } from './../../api';
 
 export default React.createClass({
+  getInitialState: function() {
+    return { added: isAdded(this.props.audio) };
+  },
   add() {
     add(this.props.audio);
+    this.setState({ added: true });
   },
   onClick(event) {
     this.props.playSwitch(event, this.props.audio);
@@ -19,7 +23,7 @@ export default React.createClass({
           {'►'}
         </span>
         { `${audio.artist} - ${audio.title} (${audio.duration / 60 | 0}:${audio.duration % 60})`}
-        { isAdded(audio) && (
+        { this.state.added && (
           <span>{' (added)'}</span>
         ) || (
           <span onClick={this.add}>{' (add)'}</span>

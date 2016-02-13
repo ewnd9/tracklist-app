@@ -8,9 +8,9 @@ import Track from './../track/track';
 
 export default React.createClass({
   getInitialState: () => {
-    if (process.env.NODE_ENV === 'development') {
-      return { tracks: splitTracklist(require('raw!./test.txt')).slice(0, 2), songs: [] };
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   return { tracks: splitTracklist(require('raw!./test.txt')).slice(0, 2), songs: [] };
+    // }
     return { tracks: null, songs: [] };
   },
   playSwitch(event, audio) {
