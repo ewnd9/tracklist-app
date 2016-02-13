@@ -6,11 +6,51 @@ import splitTracklist from 'split-tracklist';
 import CLAudioPlayer from './../player/player';
 import Track from './../track/track';
 
+import { audioSearch } from './../../api';
+
 export default React.createClass({
-  getInitialState: () => {
-    // if (process.env.NODE_ENV === 'development') {
-    //   return { tracks: splitTracklist(require('raw!./test.txt')).slice(0, 2), songs: [] };
-    // }
+  loadTracks(value) {
+    const tracks = splitTracklist(value).splice(0, 2);
+
+    if (tracks.length === 0) {
+      return null;
+    }
+
+    for (let i = 0 ; i < tracks.length ; i++) {
+      audioSearch(tracks[i])
+        .then(([length, ...audios]) => {
+          audios.forEach(audio => {
+            Object.keys(audio).forEach(key => {
+              if (typeof audio[key] === 'string') {
+                audio[key] = audio[key].replace(/&amp;/g, '&');
+              }
+            });
+          });
+
+          this.setState({
+            tracks: [
+              ...this.state.tracks.slice(0, i),
+              {
+                ...this.state.tracks[i],
+                audios
+              },
+              ...this.state.tracks.slice(i + 1)
+            ]
+          });
+        });
+    }
+
+    tracks.forEach(track => {
+      track.audios = [];
+    });
+
+    return tracks;
+  },
+  getInitialState() {
+    if (process.env.NODE_ENV === 'development') {
+      return { tracks: this.loadTracks(require('raw!./test.txt')), songs: [] };
+    }
+
     return { tracks: null, songs: [] };
   },
   playSwitch(event, audio) {
@@ -22,20 +62,17 @@ export default React.createClass({
           song: audio.title
         }
       };
-      console.log(song);
+
       this.setState({ songs: [song] });
     }
   },
   onPaste(event, id, data) {
     setTimeout(() => {
       const value = this.refs.myTextarea.value;
-      const tracks = splitTracklist(value);
-
-      this.setState({ tracks: tracks.length === 0 ? null : tracks });
+      this.setState({ tracks: this.loadTracks(value) });
     }, 100);
   },
   render() {
-    console.log(this.state.songs);
     if (this.state.tracks) {
       return <div>
         { this.state.songs.length > 0 && (
@@ -43,7 +80,11 @@ export default React.createClass({
         ) || ''}
         {
           this.state.tracks.map((track, index) => {
-            return <Track key={index} track={track} index={index} playSwitch={this.playSwitch} />;
+            return <Track key={index}
+                          track={track}
+                          audios={track.audios}
+                          index={index}
+                          playSwitch={this.playSwitch} />;
           })
         }
       </div>;
