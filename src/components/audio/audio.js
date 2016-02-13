@@ -7,8 +7,8 @@ export default React.createClass({
   add() {
     add(this.props.audio);
   },
-  onClick() {
-    playSwitch(this.props.audio.url);
+  onClick(event) {
+    this.props.playSwitch(event, this.props.audio);
   },
   render() {
     const { audio } = this.props;

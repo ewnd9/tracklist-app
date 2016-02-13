@@ -1,14 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   background-color: #F5F5F5;
 }
+
 .container {
   width: 600px;
   margin: 0 auto;
 }
+
 a {
   color: rgba(0, 0, 0, 0.87) !important;
   text-decoration: underline !important;
 }
+
 a:not([href]) {
   cursor: pointer;
+}
+
+#loginButton {
+  margin: 0 auto;
 }

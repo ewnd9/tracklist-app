@@ -34,7 +34,7 @@ module.exports = {
         loader: "file?name=[name].[ext]",
       },
       {
-        test: /\/src\/[\w]+\.css$/,
+        test: /(\/src\/[\w]+\.css$)|(\/node_modules\/.+\.css$)/,
         loaders: [
           'style-loader',
           'css-loader'

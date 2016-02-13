@@ -1,4 +1,7 @@
+import 'font-awesome/css/font-awesome.css';
+
 import './style.css';
+import './player.css';
 
 import React from 'react';
 import { render } from 'react-dom';
@@ -17,4 +20,4 @@ const App = React.createClass({
 
 setTimeout(() => {
   render(<App />, document.getElementById('app'));
-}, 500);
+}, 1000);

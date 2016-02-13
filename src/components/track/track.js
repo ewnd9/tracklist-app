@@ -27,7 +27,7 @@ export default React.createClass({
       <div className={styles.item}>{ `${ index + 1 }. ${track.artist} - ${track.title}` }</div>
       <div>
         {
-          this.state.audios.map((audio, index) => <Audio key={index} audio={audio} />)
+          this.state.audios.map((audio, index) => <Audio key={index} audio={audio} playSwitch={this.props.playSwitch} />)
         }
       </div>
     </div>;
