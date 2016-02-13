@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ewnd9/tracklister-app.svg?branch=master)](https://travis-ci.org/ewnd9/tracklister-app)
 
-[WIP]
+[WIP] Find, play and add tracks from tracklists to your VK page
 
 ## Install
 
