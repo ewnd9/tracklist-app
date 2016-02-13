@@ -30,9 +30,7 @@ function inMap(promiseFn) {
 
 function vkRequest(method, options = {}) {
   return new Promise((resolve, reject) => {
-    console.log(method);
     VK.api(method, options, function(data) {
-      console.log(method);
       if (data.response) {
         resolve(data.response);
       } else {
