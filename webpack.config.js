@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: {
@@ -37,14 +38,14 @@ module.exports = {
         test: /(\/src\/[\w]+\.css$)|(\/node_modules\/.+\.css$)/,
         loaders: [
           'style-loader',
-          'css-loader'
+          'css-loader!postcss-loader'
         ]
       },
       {
         test: /\/components\/.+\.css$/,
         loaders: [
           'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
         ]
       },
       { test: /\.png$/, loader: "url-loader?limit=100000" },
@@ -70,6 +71,7 @@ module.exports = {
       },
     })
   ],
+  postcss: [autoprefixer],
   devServer: {
     contentBase: "./dist",
     noInfo: true, //  --no-info option
